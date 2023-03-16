@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>打地鼠小遊戲</title>
+	<style>
+		#game-board {
+			width: 500px;
+			height: 400px;
+			border: 1px solid #000;
+			position: relative;
+			background-color: #00FF00;
+		}
+		#mole {
+			width: 50px;
+			height: 50px;
+			border: 1px solid #000;
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: none;
+			background-color: #A52A2A;
+		}
+	</style>
+</head>
+<body>
+	<h1>打地鼠小遊戲</h1>
+	<p>得分：<span id="score">0</span></p>
+	<div id="game-board">
+		<div id="mole"></div>
+	</div>
+	<button id="start-button">開始遊戲</button>
+	<script>
+		// 定義變量
+		var mole = document.getElementById('mole');
+		var score = document.getElementById('score');
+		var gameBoard = document.getElementById('game-board');
+		var intervalId;
+		var points = 0;
+
+		// 開始遊戲
+		function startGame() {
+			intervalId = setInterval(showMole, 2000);
+			gameBoard.addEventListener('click', handleHit);
+		}
+
+		// 顯示地鼠
+		function showMole() {
+			var x = Math.floor(Math.random() * (gameBoard.offsetWidth - mole.offsetWidth));
+			var y = Math.floor(Math.random() * (gameBoard.offsetHeight - mole.offsetHeight));
+			mole.style.top = y + 'px';
+			mole.style.left = x + 'px';
+			mole.style.display = 'block';
+			setTimeout(hideMole, 1000);
+		}
+
+		// 隱藏地鼠
+		function hideMole() {
+			mole.style.display = 'none';
+		}
+
+		// 處理擊中地鼠事件
+		function handleHit(event) {
+			if (event.target === mole) {
+				points++;
+				score.textContent = points;
+				hideMole();
+			}
+		}
+
+		// 遊戲結束
+		function endGame() {
+			clearInterval(intervalId);
+			gameBoard.removeEventListener('click', handleHit);
+			alert('遊戲結束，得分：' + points);
+		}
+
+		// 監聽開始遊戲按鈕
+		var startButton = document.getElementById('start-button');
+		startButton.addEventListener('click', function() {
+			startGame();
+			// 遊戲時間到自動結束
+			setTimeout(endGame, 30000);
+		});
+	</script>
+</body>
+</html>
