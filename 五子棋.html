@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>五子棋游戏</title>
+    <style>
+      #game-board {
+        border: 1px solid black;
+        width: 600px;
+        height: 600px;
+        margin: 0 auto;
+      }
+      .game-cell {
+        box-sizing: border-box;
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        float: left;
+      }
+      .white-piece {
+        background-color: white;
+        border-radius: 50%;
+      }
+      .black-piece {
+        background-color: black;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-board"></div>
+    <script>
+      // 生成游戏棋盘
+      const gameBoard = document.getElementById("game-board");
+      for (let i = 0; i < 15; i++) {
+        const row = document.createElement("div");
+        row.classList.add("game-row");
+        for (let j = 0; j < 15; j++) {
+          const cell = document.createElement("div");
+          cell.classList.add("game-cell");
+          cell.dataset.row = i;
+          cell.dataset.col = j;
+          row.appendChild(cell);
+        }
+        gameBoard.appendChild(row);
+      }
+
+      // 定义游戏状态
+      let currentPlayer = "black";
+      const gameState = Array.from(Array(15), () => Array(15).fill(null));
+
+      // 点击落子事件
+      gameBoard.addEventListener("click", (event) => {
+        const cell = event.target;
+        const row = cell.dataset.row;
+        const col = cell.dataset.col;
+
+        if (gameState[row][col] !== null) {
+          return;
+        }
+
+        gameState[row][col] = currentPlayer;
+        cell.classList.add(currentPlayer === "black" ? "black-piece" : "white-piece");
+        currentPlayer = currentPlayer === "black" ? "white" : "black";
+      });
+    </script>
+  </body>
+</html>
